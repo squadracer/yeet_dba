@@ -4,7 +4,7 @@ module YeetDba
       eager_load!
       tables.map do |table_name|
         Table.new(table_name: table_name,
-                  tables: tables).missing_keys
+                  tables: tables).missing_keys(ignored_columns[table_name])
       end.flatten
     end
 
