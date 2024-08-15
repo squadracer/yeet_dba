@@ -7,10 +7,12 @@ module YeetDba
       @tables = tables
     end
 
-    def invalid_columns
+    def invalid_columns(ignored_columns=[])
+      ignored_columns ||= []
       missing_keys_array = []
       columns.each do |db_column|
         column = Column.new(db_column: db_column, table_name: table_name, tables: tables)
+        next if ignored_columns.include?(column.name)
         next unless column.is_association?
         next if column.polymorphic_association?
         next if column.foreign_key_exists?
